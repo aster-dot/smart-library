@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Library Login</title>
+  </head>
+
+  <body>
+    <h2>Library Login</h2>
+
+    <input type="email" id="email" placeholder="Enter Email" />
+    <button onclick="login()">Login</button>
+
+    <script>
+      function login() {
+        let email = document.getElementById("email").value;
+
+        if (email) {
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Enter email");
+        }
+      }
+    </script>
+  </body>
+</html>
