@@ -1,15 +1,110 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Admin Dashboard</title>
-  </head>
+<head>
+<title>Admin Dashboard</title>
+</head>
 
-  <body>
-    <h2>Admin Dashboard</h2>
+<body>
 
-    <button>Add Book</button>
-    <button>Remove Book</button>
-    <button>Approve Reviews</button>
-    <button>View Users</button>
-  </body>
+<h2>Admin Dashboard</h2>
+
+<button onclick="showAddBook()">Add Book</button>
+<button onclick="viewBooks()">View Books</button>
+<button onclick="viewReviews()">Approve Reviews</button>
+
+<div id="admin"></div>
+
+<script>
+
+let books = [
+"Atomic Habits",
+"Harry Potter",
+"The Alchemist",
+"Rich Dad Poor Dad"
+];
+
+let reviews = [
+{book:"Atomic Habits", review:"Very helpful", status:"Pending"},
+{book:"Harry Potter", review:"Fun read", status:"Pending"}
+];
+
+function showAddBook(){
+
+let form = `
+<h3>Add Book</h3>
+<input type="text" id="bookName" placeholder="Book Name">
+<button onclick="addBook()">Add</button>
+`;
+
+document.getElementById("admin").innerHTML = form;
+
+}
+
+function addBook(){
+
+let book = document.getElementById("bookName").value;
+
+books.push(book);
+
+alert("Book Added");
+
+viewBooks();
+
+}
+
+function viewBooks(){
+
+let output = "<h3>Books</h3>";
+
+for(let i=0;i<books.length;i++){
+output += "<p>" + books[i] + 
+" <button onclick='deleteBook("+i+")'>Delete</button></p>";
+}
+
+document.getElementById("admin").innerHTML = output;
+
+}
+
+function deleteBook(index){
+
+books.splice(index,1);
+
+alert("Book Deleted");
+
+viewBooks();
+
+}
+
+function viewReviews(){
+
+let output = "<h3>Pending Reviews</h3>";
+
+for(let i=0;i<reviews.length;i++){
+
+if(reviews[i].status == "Pending"){
+
+output += "<p>" + reviews[i].book + " - " + reviews[i].review + 
+" <button onclick='approveReview("+i+")'>Approve</button></p>";
+
+}
+
+}
+
+document.getElementById("admin").innerHTML = output;
+
+}
+
+function approveReview(index){
+
+reviews[index].status = "Approved";
+
+alert("Review Approved. Credits will be awarded.");
+
+viewReviews();
+
+}
+
+</script>
+
+</body>
 </html>

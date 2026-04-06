@@ -1,15 +1,158 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Dashboard</title>
-  </head>
+<head>
+<title>Dashboard</title>
+</head>
 
-  <body>
-    <h2>Library Dashboard</h2>
+<body>
 
-    <button>View Books</button>
-    <button>Search by Mood</button>
-    <button>Borrow Book</button>
-    <button>Return Book</button>
-  </body>
+<h2>Library Dashboard</h2>
+
+<button onclick="searchMood()">Search by Mood</button>
+<button onclick="viewBooks()">View Books</button>
+
+<div id="books"></div>
+
+<h3 id="credit">Credits: 0</h3>
+<h3 id="fine">Fine: 0</h3>
+
+<button onclick="useCredits()">Use Credits to Reduce Fine</button>
+
+<div id="borrowed"></div>
+
+<script>
+
+let borrowedBooks = [];
+let credits = 0;
+let fine = 20; // sample fine
+
+updateFine();
+
+function viewBooks(){
+
+let books = [
+"Atomic Habits",
+"Harry Potter",
+"The Alchemist",
+"Rich Dad Poor Dad"
+];
+
+let output = "";
+
+for(let i=0;i<books.length;i++){
+output += "<p>" + books[i] + 
+" <button onclick='borrowBook(\"" + books[i] + "\")'>Borrow</button></p>";
+}
+
+document.getElementById("books").innerHTML = output;
+
+showBorrowed();
+
+}
+
+function borrowBook(book){
+
+borrowedBooks.push(book);
+
+alert(book + " Borrowed");
+
+showBorrowed();
+
+}
+
+function showBorrowed(){
+
+let output = "<h3>Borrowed Books</h3>";
+
+for(let i=0;i<borrowedBooks.length;i++){
+output += "<p>" + borrowedBooks[i] + 
+" <button onclick='returnBook(" + i + ")'>Return</button></p>";
+}
+
+document.getElementById("borrowed").innerHTML = output;
+
+}
+
+function returnBook(index){
+
+let book = borrowedBooks[index];
+
+borrowedBooks.splice(index,1);
+
+let review = prompt("Write review for " + book);
+
+if(review){
+credits += 10;
+updateCredits();
+alert("Review submitted. 10 credits added");
+}
+
+showBorrowed();
+
+}
+
+function updateCredits(){
+document.getElementById("credit").innerHTML = "Credits: " + credits;
+}
+
+function updateFine(){
+document.getElementById("fine").innerHTML = "Fine: " + fine;
+}
+
+function useCredits(){
+
+if(credits > 0 && fine > 0){
+
+fine -= 10;
+credits -= 10;
+
+if(fine < 0){
+fine = 0;
+}
+
+updateCredits();
+updateFine();
+
+alert("Credits applied to fine");
+
+}
+else{
+alert("No credits or no fine");
+}
+
+}
+
+function searchMood(){
+
+let mood = prompt("Enter Mood: Motivation / Fun / Inspiration");
+
+let books = {
+"Motivation": ["Atomic Habits", "Rich Dad Poor Dad"],
+"Fun": ["Harry Potter"],
+"Inspiration": ["The Alchemist"]
+};
+
+let result = books[mood];
+
+let output = "";
+
+if(result){
+for(let i=0;i<result.length;i++){
+output += "<p>" + result[i] + 
+" <button onclick='borrowBook(\"" + result[i] + "\")'>Borrow</button></p>";
+}
+}
+else{
+output = "No books found";
+}
+
+document.getElementById("books").innerHTML = output;
+
+showBorrowed();
+
+}
+
+</script>
+
+</body>
 </html>
